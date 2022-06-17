@@ -5,7 +5,7 @@ Solutions to advent of code questions, used to review/learn languages.
 ## C/C++
 
 - [x] 01
-- [x] 02
+- [ ] 02
 - [ ] 03
 - [ ] 03
 - [ ] 04
@@ -35,7 +35,7 @@ Solutions to advent of code questions, used to review/learn languages.
 
 ## Python
 
-- [ ] 01
+- [x] 01
 - [ ] 02
 - [ ] 03
 - [ ] 03
