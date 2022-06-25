@@ -7,7 +7,6 @@ Solutions to advent of code questions, used to review/learn languages.
 - [x] 01
 - [x] 02
 - [x] 03
-- [ ] 03
 - [ ] 04
 - [ ] 05
 - [ ] 06
@@ -37,7 +36,6 @@ Solutions to advent of code questions, used to review/learn languages.
 
 - [x] 01
 - [ ] 02
-- [ ] 03
 - [ ] 03
 - [ ] 04
 - [ ] 05
@@ -69,7 +67,6 @@ Solutions to advent of code questions, used to review/learn languages.
 - [ ] 01
 - [ ] 02
 - [ ] 03
-- [ ] 03
 - [ ] 04
 - [ ] 05
 - [ ] 06
@@ -99,7 +96,6 @@ Solutions to advent of code questions, used to review/learn languages.
 
 - [ ] 01
 - [ ] 02
-- [ ] 03
 - [ ] 03
 - [ ] 04
 - [ ] 05
