@@ -7,7 +7,7 @@ Solutions to advent of code questions, used to review/learn languages.
 - [x] 01
 - [x] 02
 - [x] 03
-- [ ] 04
+- [x] 04
 - [ ] 05
 - [ ] 06
 - [ ] 07
