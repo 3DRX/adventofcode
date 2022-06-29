@@ -64,7 +64,7 @@ Solutions to advent of code questions, used to review/learn languages.
 
 ## JS
 
-- [ ] 01
+- [x] 01
 - [ ] 02
 - [ ] 03
 - [ ] 04
@@ -121,4 +121,3 @@ Solutions to advent of code questions, used to review/learn languages.
 - [ ] 25
 
 ---
-
