@@ -65,7 +65,7 @@ Solutions to advent of code questions, used to review/learn languages.
 ## JS
 
 - [x] 01
-- [ ] 02
+- [x] 02
 - [ ] 03
 - [ ] 04
 - [ ] 05
