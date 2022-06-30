@@ -66,7 +66,7 @@ Solutions to advent of code questions, used to review/learn languages.
 
 - [x] 01
 - [x] 02
-- [ ] 03
+- [x] 03
 - [ ] 04
 - [ ] 05
 - [ ] 06
