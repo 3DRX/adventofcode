@@ -92,7 +92,7 @@ Solutions to advent of code questions, used to review/learn languages.
 
 ---
 
-## Golang
+## Java
 
 - [ ] 01
 - [ ] 02
