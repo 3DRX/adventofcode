@@ -6,7 +6,7 @@
 #include <ostream>
 #include <vector>
 
-#define INPUTLENGTH 10
+#define INPUTLENGTH 500
 
 typedef struct {
     int x1;
@@ -57,7 +57,9 @@ void input(void)
 void filter(void)
 {
     for (auto iter = lines.begin(); iter < lines.end();) {
-        if ((*iter).x1 == (*iter).x2 || (*iter).y1 == (*iter).y2) {
+        if (
+            (*iter).x1 == (*iter).x2 || (*iter).y1 == (*iter).y2 || (((*iter).y2 - (*iter).y1) / ((*iter).x2 - (*iter).x1)) == 1 || (((*iter).y2 - (*iter).y1) / ((*iter).x2 - (*iter).x1)) == -1) {
+            // vertical, horizontal, or diagonal
             iter++;
         }
         else {
@@ -106,7 +108,7 @@ int main(void)
                 }
             }
         }
-        else {
+        else if (i.y1 == i.y2) {
             for (int k = std::min(i.x1, i.x2); k <= std::max(i.x1, i.x2); k++) {
                 if (grid[k][i.y1] == '.') {
                     grid[k][i.y1] = '1';
@@ -118,6 +120,38 @@ int main(void)
                 else {
                     grid[k][i.y1]++;
                 }
+            }
+        }
+        else if (((i.y2 - i.y1) / (i.x2 - i.x1)) == 1) {
+            int temp = std::min(i.y1, i.y2);
+            for (int k = std::min(i.x1, i.x2); k <= std::max(i.x1, i.x2); k++) {
+                if (grid[k][temp] == '.') {
+                    grid[k][temp] = '1';
+                }
+                else if (grid[k][temp] == '1') {
+                    grid[k][temp]++;
+                    count++;
+                }
+                else {
+                    grid[k][temp]++;
+                }
+                temp++;
+            }
+        }
+        else if (((i.y2 - i.y1) / (i.x2 - i.x1)) == -1) {
+            int temp = std::max(i.y1, i.y2);
+            for (int k = std::min(i.x1, i.x2); k <= std::max(i.x1, i.x2); k++) {
+                if (grid[k][temp] == '.') {
+                    grid[k][temp] = '1';
+                }
+                else if (grid[k][temp] == '1') {
+                    grid[k][temp]++;
+                    count++;
+                }
+                else {
+                    grid[k][temp]++;
+                }
+                temp--;
             }
         }
     }
