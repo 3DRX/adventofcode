@@ -8,9 +8,9 @@ Solutions to advent of code questions, used to review/learn languages.
 - [x] 02
 - [x] 03
 - [x] 04
-- [ ] 05
-- [ ] 06
-- [ ] 07
+- [x] 05
+- [x] 06
+- [x] 07
 - [ ] 08
 - [ ] 09
 - [ ] 10
