@@ -1,6 +1,6 @@
 import fileinput
 
-def strategy(ins:str, X:int):
+def strategy(ins: str, X: int):
     global depth
     global horizontal_position
     global aim
