@@ -14,10 +14,10 @@ public class Main {
         oxygen = 0;
         co2 = 0;
         input();
-        list = generateList();
+        generateList();
         getOxygen();
         oxygen = Integer.parseInt(list.get(0), 2);
-        list = generateList();
+        generateList();
         getCo2();
         co2 = Integer.parseInt(list.get(0), 2);
         System.out.format("the ans is: %d\n", oxygen * co2);
@@ -37,22 +37,24 @@ public class Main {
         }
     }
 
-    private static LinkedList<String> generateList() {
-        LinkedList<String> res = new LinkedList<String>();
-        for (int i = 0; i < data.size(); i++) {
-            res.add(data.get(i));
+    private static void generateList() {
+        if (list != null) {
+            list.clear();
         }
-        return res;
+        list = new LinkedList<String>();
+        for (int i = 0; i < data.size(); i++) {
+            list.add(data.get(i));
+        }
     }
 
     private static void getOxygen() {
+        int index = 0;
         while (list.size() > 1) {
-            // System.out.println(list.size());
             int one = 0;
             int zero = 0;
             // count
-            for (int i = 0; i < data.size(); i++) {
-                if (data.get(i).charAt(0) == '0') {
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).charAt(index) == '0') {
                     zero++;
                 } else {
                     one++;
@@ -61,7 +63,7 @@ public class Main {
             if (one >= zero) {
                 // remove strings start with 0
                 for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).charAt(0) == '0') {
+                    if (list.get(i).charAt(index) == '0') {
                         list.remove(i);
                         i--;
                     }
@@ -69,22 +71,24 @@ public class Main {
             } else {
                 // remove strings start with 1
                 for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).charAt(0) == '1') {
+                    if (list.get(i).charAt(index) == '1') {
                         list.remove(i);
                         i--;
                     }
                 }
             }
+            index++;
         }
     }
 
     private static void getCo2() {
+        int index = 0;
         while (list.size() > 1) {
             int one = 0;
             int zero = 0;
             // count
-            for (int i = 0; i < data.size(); i++) {
-                if (data.get(i).charAt(0) == '0') {
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).charAt(index) == '0') {
                     zero++;
                 } else {
                     one++;
@@ -93,18 +97,21 @@ public class Main {
             if (one >= zero) {
                 // remove strings start with 1
                 for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).charAt(0) == '1') {
+                    if (list.get(i).charAt(index) == '1') {
                         list.remove(i);
+                        i--;
                     }
                 }
             } else {
                 // remove strings start with 0
                 for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).charAt(0) == '0') {
+                    if (list.get(i).charAt(index) == '0') {
                         list.remove(i);
+                        i--;
                     }
                 }
             }
+            index++;
         }
     }
 }
