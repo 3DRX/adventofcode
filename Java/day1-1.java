@@ -1,26 +1,42 @@
-import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
 
+import java.io.*;
 
 public class Main {
+
+    static ArrayList<String> data;
+
     public static void main(String[] args) {
+        data = new ArrayList<String>();
+        input();
+        int ans = lalala();
+        System.out.format("the ans is: %d\n", ans);
+    }
+
+    private static void input() {
         try {
-            Path path = Paths.get("../input.io");
-            java.util.Scanner scanner = new java.util.Scanner(path);
-            int count = 0;
-            int last = -1;
-            while (scanner.hasNextLine()) {
-                int ipt = scanner.nextInt();
-                if (last == -1) {
-                } else if (last < ipt) {
-                    count++;
-                }
-                last = ipt;
+            BufferedReader in = new BufferedReader(new FileReader("../input.io"));
+            StringBuffer sb;
+            while (in.ready()) {
+                sb = new StringBuffer(in.readLine());
+                data.add(data.size(), sb.toString());
             }
-            System.out.println(count);
+            in.close();
         } catch (IOException e) {
+            System.out.println("you fucked up");
         }
+    }
+
+    private static int lalala() {
+        int res = 0;
+        int last = 0;
+        for (int i = 0; i < data.size(); i++) {
+            if (i == 0) {
+            } else if (Integer.parseInt(data.get(i)) > last) {
+                res++;
+            }
+            last = Integer.parseInt(data.get(i));
+        }
+        return res;
     }
 }
