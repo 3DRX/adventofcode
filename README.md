@@ -94,8 +94,8 @@ Solutions to advent of code questions, used to review/learn languages.
 
 ## Java
 
-- [ ] 01
-- [ ] 02
+- [x] 01
+- [x] 02
 - [ ] 03
 - [ ] 04
 - [ ] 05
