@@ -1,8 +1,10 @@
+package com.kangjingyang;
+
 import java.util.ArrayList;
 
 import java.io.*;
 
-public class Main {
+public class day3_1 {
 
     static ArrayList<String> data;
     static String gamma;

@@ -1,8 +1,10 @@
+package com.kangjingyang;
+
 import java.util.ArrayList;
 
 import java.io.*;
 
-public class Main {
+public class day2_2 {
 
     static ArrayList<String> data;
     static int horizontal_position;

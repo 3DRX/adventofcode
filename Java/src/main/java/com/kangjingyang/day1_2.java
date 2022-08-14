@@ -1,17 +1,12 @@
+package com.kangjingyang;
+
 import java.util.ArrayList;
 
 import java.io.*;
 
-public class Main {
+public class day1_2 {
 
     static ArrayList<String> data;
-
-    public static void main(String[] args) {
-        data = new ArrayList<String>();
-        input();
-        int ans = lalala();
-        System.out.format("the ans is: %d\n", ans);
-    }
 
     private static void input() {
         try {
@@ -27,15 +22,19 @@ public class Main {
         }
     }
 
-    private static int lalala() {
+    public static void main(String[] args) {
+        data = new ArrayList<String>();
+        input();
+        int ans = algo();
+        System.out.format("the ans is: %d\n", ans);
+    }
+
+    private static int algo() {
         int res = 0;
-        int last = 0;
-        for (int i = 0; i < data.size(); i++) {
-            if (i == 0) {
-            } else if (Integer.parseInt(data.get(i)) > last) {
+        for (int i = 0; i < data.size() - 3; i++) {
+            if (Integer.parseInt(data.get(i)) < Integer.parseInt(data.get(i + 3))) {
                 res++;
             }
-            last = Integer.parseInt(data.get(i));
         }
         return res;
     }

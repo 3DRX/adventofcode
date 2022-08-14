@@ -1,8 +1,10 @@
+package com.kangjingyang;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.io.*;
 
-public class Main {
+public class day3_2 {
 
     static ArrayList<String> data;
     static LinkedList<String> list;
