@@ -13,7 +13,9 @@ public class day4_1 {
         data = new ArrayList<String>();
         Grids = new ArrayList<GRID>();
         input();
-        algo();
+        int ans = algo();
+        System.out.println("the ans is");
+        System.out.println(ans);
     }
 
     private static void input() {
@@ -57,17 +59,55 @@ public class day4_1 {
         }
         // validation
         // for (GRID gd : Grids) {
-        //     for (int i = 0; i < 5; i++) {
-        //         for (int j = 0; j < 5; j++) {
-        //             System.out.format("%2d ", gd.grid[i][j].value);
-        //         }
-        //         System.out.println();
-        //     }
-        //     System.out.println();
+        // for (int i = 0; i < 5; i++) {
+        // for (int j = 0; j < 5; j++) {
+        // System.out.format("%2d ", gd.grid[i][j].value);
+        // }
+        // System.out.println();
+        // }
+        // System.out.println();
         // }
     }
 
-    private static void algo() {
+    private static int algo() {
+        int ans = 0;
+        for (int number : numbers) {
+            checkOutGrids(number);
+            int temp = checkBingo();
+            if (temp == -1) {
+                continue;
+            } else {
+                ans = calScore(temp, number);
+                break;
+            }
+        }
+        return ans;
+    }
+
+    private static void checkOutGrids(int target) {
+        for (GRID grd : Grids) {
+            grd.checkOut(target);
+        }
+    }
+
+    private static int checkBingo() {
+        int rtn = -1;
+        for (GRID grd : Grids) {
+            int temp = grd.checkBingo();
+            if (temp == -1) {
+                continue;
+            } else {
+                rtn = temp;
+            }
+        }
+        return rtn;
+    }
+
+    private static int calScore(int index, int num_just_called) {
+        int ans = Grids.get(index).sum_unmarked_nums();
+        System.out.format("Sum: %d\n", ans);
+        ans *= num_just_called;
+        return ans;
     }
 }
 
@@ -83,4 +123,46 @@ public class NUM {
 
 public class GRID {
     NUM[][] grid = new NUM[5][5];
+
+    public void checkOut(int target) {
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (this.grid[i][j].value == target) {
+                    this.grid[i][j].isLit = true;
+                }
+            }
+        }
+    }
+
+    public int checkBingo() {
+        int ret = -1;
+        for (int i = 0; i < 5; i++) {
+            if (this.grid[i][0].isLit &&
+                    this.grid[i][1].isLit &&
+                    this.grid[i][2].isLit &&
+                    this.grid[i][3].isLit &&
+                    this.grid[i][4].isLit) {
+                ret = i;
+            } else if (this.grid[0][i].isLit &&
+                    this.grid[1][i].isLit &&
+                    this.grid[2][i].isLit &&
+                    this.grid[3][i].isLit &&
+                    this.grid[4][i].isLit) {
+                ret = i;
+            }
+        }
+        return ret;
+    }
+
+    public int sum_unmarked_nums() {
+        int res = 0;
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (this.grid[i][j].isLit == false) {
+                    res += this.grid[i][j].value;
+                }
+            }
+        }
+        return res;
+    }
 }
