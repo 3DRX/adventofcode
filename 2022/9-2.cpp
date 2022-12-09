@@ -106,15 +106,21 @@ void updateTailPosition(coordinate* tailPosition, coordinate* headPosition)
             tailPosition->y--;
             updateTailPosition(tailPosition, headPosition);
         }
+        else {
+            // a new case in phase 2
+            // ..H    ..H
+            // ... => .T.
+            // T..    ...
+            Hx > Tx ? tailPosition->x++ : tailPosition->x--;
+            Hy > Ty ? tailPosition->y++ : tailPosition->y--;
+        }
     }
 }
 
 int answer(std::vector<node>* L)
 {
     std::unordered_set<coordinate, coordinateHash> SET;
-    // coordinate of Tail
-    // coordinate tailPosition = coordinate(0, 0);
-    // coordinate headPosition = coordinate(0, 0);
+    // vector that contains every coordinate of the snake
     std::vector<coordinate> Coordinates;
     for (int i = 0; i < 10; i++) {
         Coordinates.push_back(coordinate(0, 0));
@@ -136,7 +142,8 @@ int answer(std::vector<node>* L)
             else { // 'D'
                 Coordinates.at(0).y--;
             }
-            // find out the coordinate of Tail after the movement and put it into SET
+            // traverse the snake from Head to Tail
+            // and push the new position of the Tail into SET
             for (int i = 1; i < 10; i++) {
                 updateTailPosition(&Coordinates.at(i), &Coordinates.at(i - 1));
             }
