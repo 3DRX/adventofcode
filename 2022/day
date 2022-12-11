@@ -1,0 +1,54 @@
+#!/usr/bin/sh
+
+echo "
+#include <iostream>
+#include <string>
+#include <vector>
+
+#define DS type_here
+
+struct ST {
+};
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::getline;
+using std::string;
+using std::vector;
+
+void input(vector<DS>* L);
+void testipt(vector<DS>* L);
+int  ans(vector<DS>* L);
+
+int main(void)
+{
+    vector<DS> L;
+    testipt(&L);
+    cout << ans(&L) << endl;
+    return 0;
+}
+
+void input(vector<DS>* L)
+{
+    string iptLine;
+    while (1) {
+    }
+}
+
+void testipt(vector<DS>* L)
+{
+    for (auto A : *L) {
+        cout << endl;
+    }
+}
+
+int ans(vector<DS>* L)
+{
+    int ans = 0;
+    return ans;
+}
+" > day$1-1.cpp
+
+touch day$1-2.cpp
+
