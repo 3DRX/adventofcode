@@ -14,20 +14,21 @@ struct Monkey {
     vector<long long> items;
     struct operation {
         // nums are set to -1 to represent old
-        long long  num1;
-        long long  num2;
-        char operatorr;
+        long long num1;
+        long long num2;
+        char      operatorr;
     } oper;
 };
 
-void inputMonkeys(vector<Monkey>* L);
-long long  ans(vector<Monkey>* L);
+void      inputMonkeys(vector<Monkey>* L);
+long long ans(vector<Monkey>* L, long long magicNumber);
+long long getMagicNumber(vector<Monkey>* L);
 
 int main(void)
 {
     vector<Monkey> L;
     inputMonkeys(&L);
-    std::cout << ans(&L) << std::endl;
+    std::cout << ans(&L, getMagicNumber(&L)) << std::endl;
     return 0;
 }
 
@@ -102,18 +103,13 @@ void inputMonkeys(vector<Monkey>* L)
     }
 }
 
-long long ans(vector<Monkey>* L)
+long long ans(vector<Monkey>* L, long long magicNumber)
 {
-    long long round = 20;
+    long long round = 10000;
     for (long long i = 0; i < round; i++) {
         for (long long monkeyIndex = 0; monkeyIndex < L->size(); monkeyIndex++) {
             while (L->at(monkeyIndex).items.empty() == false) {
                 long long item = L->at(monkeyIndex).items.front();
-                // std::cout << "round " << i + 1 << " | ";
-                // std::cout << "monkey " << L->at(monkeyIndex).index << " | ";
-                // std::cout << "the monkey have " << L->at(monkeyIndex).items.size() << " items"
-                //           << " | ";
-                // std::cout << "checking item " << item << std::endl;
                 L->at(monkeyIndex).items.erase(L->at(monkeyIndex).items.begin());
                 L->at(monkeyIndex).inspectTimes++;
                 long long num1 = L->at(monkeyIndex).oper.num1;
@@ -134,25 +130,23 @@ long long ans(vector<Monkey>* L)
                 else {
                     std::cout << "you fucked up" << std::endl;
                 }
-                item /= 3;
+                item %= magicNumber;
                 if (item % L->at(monkeyIndex).testNum == 0) {
                     L->at(L->at(monkeyIndex).trueDest).items.push_back(item);
-                    // std::cout << "give item " << item << " to monkey " << L->at(monkeyIndex).trueDest << std::endl;
                 }
                 else {
                     L->at(L->at(monkeyIndex).falseDest).items.push_back(item);
-                    // std::cout << "give item " << item << " to monkey " << L->at(monkeyIndex).falseDest << std::endl;
                 }
             }
         }
-        std::cout << "round " << i + 1 << " summery:" << std::endl;
-        for (auto theMonkey : *L) {
-            std::cout << theMonkey.index << " have: ";
-            for (auto item : theMonkey.items) {
-                std::cout << item << ", ";
-            }
-            std::cout << std::endl;
-        }
+        // std::cout << "round " << i + 1 << " summery:" << std::endl;
+        // for (auto theMonkey : *L) {
+        //     std::cout << theMonkey.index << " have: ";
+        //     for (auto item : theMonkey.items) {
+        //         std::cout << item << ", ";
+        //     }
+        //     std::cout << std::endl;
+        // }
     }
     // compute answer
     long long first = 0;
@@ -167,4 +161,13 @@ long long ans(vector<Monkey>* L)
         }
     }
     return first * second;
+}
+
+long long getMagicNumber(vector<Monkey>* L)
+{
+    int res = 1;
+    for (auto aMonkey : *L) {
+        res *= aMonkey.testNum;
+    }
+    return res;
 }
