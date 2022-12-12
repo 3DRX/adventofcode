@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/bin/sh
 
 echo "
 #include <iostream>
@@ -48,7 +48,7 @@ int ans(vector<DS>* L)
     int ans = 0;
     return ans;
 }
-" > day$1-1.cpp
+" > $1-1.cpp
 
-touch day$1-2.cpp
+touch $1-2.cpp
 

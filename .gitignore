@@ -3,4 +3,8 @@ a.out
 *.class
 .clang-format
 *.io
+r
+t
+r_
+t_
 
