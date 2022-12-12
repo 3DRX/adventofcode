@@ -1,8 +1,13 @@
 
+#include <cassert>
+#include <climits>
 #include <cstdlib>
 #include <iostream>
 #include <string>
 #include <vector>
+
+#define VAL(a) (a == 'S' ? 0 : a == 'E' ? 25 \
+                                        : a - 'a')
 
 using std::cin;
 using std::cout;
@@ -14,29 +19,42 @@ using std::vector;
 struct pix {
     char value;
     bool visited;
-    pix(char value, bool visited)
+    int  distence;
+    int  i;
+    int  k;
+    pix(int i, int k, char value, bool visited, int distence = INT_MAX)
     {
         this->value = value;
         this->visited = visited;
+        this->distence = distence;
+        this->i = i;
+        this->k = k;
+    }
+    pix(const pix& a)
+    {
+        this->value = a.value;
+        this->visited = a.visited;
+        this->distence = a.distence;
+        this->i = a.i;
+        this->k = a.k;
     }
 };
 
-void input(vector<vector<pix>>* L);
-void testipt(vector<vector<pix>>* L);
-int  ans(vector<vector<pix>>* L);
+pix input(vector<vector<pix>>* L);
+int ans(vector<vector<pix>>* L, pix P);
 
 int main(void)
 {
     vector<vector<pix>> L;
-    input(&L);
-    // testipt(&L);
-    cout << ans(&L) << endl;
+    cout << ans(&L, input(&L)) << endl;
     return 0;
 }
 
-void input(vector<vector<pix>>* L)
+pix input(vector<vector<pix>>* L)
 {
+    pix*   res;
     string iptLine;
+    int    i = 0;
     while (1) {
         getline(cin, iptLine);
         if (iptLine == "") {
@@ -44,99 +62,25 @@ void input(vector<vector<pix>>* L)
         }
         else {
             vector<pix> newLine;
-            for (char c : iptLine) {
-                newLine.push_back(pix(c, false));
+            for (int k = 0; k < iptLine.size(); k++) {
+                pix newPix = pix(i, k, iptLine[k], false, INT_MAX);
+                newLine.push_back(newPix);
+                if (newPix.value == 'S') {
+                    res = new pix(newPix);
+                }
             }
             L->push_back(newLine);
         }
+        i++;
     }
+    return *res;
 }
 
-void testipt(vector<vector<char>>* L)
+void printGrid(vector<vector<pix>>* L)
 {
-    for (auto A : *L) {
-        for (auto B : A) {
-            cout << B;
-        }
-        cout << endl;
-    }
-}
-
-vector<char> possibleDirections(int i, int k, vector<vector<pix>>* L, vector<vector<bool>>* visited)
-{
-    vector<char> ans;
-    char         self = L->at(i).at(k).value;
-    if (self == 'S') {
-        if (i != L->size() - 1) {
-            ans.push_back('s');
-        }
-        if (k != L->at(0).size() - 1) {
-            ans.push_back('d');
-        }
-        if (i != 0) {
-            ans.push_back('w');
-        }
-        if (k != 0) {
-            ans.push_back('a');
-        }
-    }
-    else {
-        // first, lets see if i is under 20(E is at 20,145) or not.
-        // if so, go down first
-        if (i < 20) {
-            if (i != L->size() - 1 && L->at(i + 1).at(k).value - self <= 1 && visited->at(i + 1).at(k) == false) {
-                if (L->at(i + 1).at(k).value == 'E' && (self != 'z' && self != 'y')) {
-                }
-                else {
-                    ans.push_back('s');
-                }
-            }
-            if (i != 0 && L->at(i - 1).at(k).value - self <= 1 && visited->at(i - 1).at(k) == false) {
-                if (L->at(i - 1).at(k).value == 'E' && (self != 'z' && self != 'y')) {
-                }
-                else {
-                    ans.push_back('w');
-                }
-            }
-        }
-        // else, go up first
-        else {
-            if (i != 0 && L->at(i - 1).at(k).value - self <= 1 && visited->at(i - 1).at(k) == false) {
-                if (L->at(i - 1).at(k).value == 'E' && (self != 'z' && self != 'y')) {
-                }
-                else {
-                    ans.push_back('w');
-                }
-            }
-            if (L->at(i + 1).at(k).value == 'E' && (self != 'z' && self != 'y')) {
-            }
-            else {
-                ans.push_back('s');
-            }
-        }
-        if (k != L->at(0).size() - 1 && L->at(i).at(k + 1).value - self <= 1 && visited->at(i).at(k + 1) == false) {
-            if (L->at(i).at(k + 1).value == 'E' && (self != 'z' && self != 'y')) {
-            }
-            else {
-                ans.push_back('d');
-            }
-        }
-        if (k != 0 && L->at(i).at(k - 1).value - self <= 1 && visited->at(i).at(k - 1) == false) {
-            if (L->at(i).at(k - 1).value == 'E' && (self != 'z' && self != 'y')) {
-            }
-            else {
-                ans.push_back('a');
-            }
-        }
-    }
-    return ans;
-}
-
-void printGrid(vector<vector<bool>>* visited)
-{
-    for (auto line : *visited) {
+    for (auto line : *L) {
         for (auto a : line) {
-            if (a) {
+            if (a.visited) {
                 cout << "#";
             }
             else {
@@ -148,53 +92,81 @@ void printGrid(vector<vector<bool>>* visited)
     cout << endl;
 }
 
-void dfs(int& ans, vector<vector<pix>>* L, int i, int k, int stepCount, vector<vector<bool>> visited)
+bool isValid(vector<vector<pix>>* L, int i, int k, char direction)
 {
-    L->at(i).at(k).visited = true;
-    visited.at(i).at(k) = true;
-    printGrid(&visited);
-    if (L->at(i).at(k).value == 'E') {
-        cout << "find a solution with step: " << stepCount << endl;
-        if (stepCount < ans) {
-            ans = stepCount;
+    pix  self = L->at(i).at(k);
+    pix* dest;
+    if (direction == 'w') {
+        if (i == 0) {
+            return false;
         }
-        if (ans == 29) {
-            exit(EXIT_SUCCESS);
+        dest = &L->at(i - 1).at(k);
+    }
+    else if (direction == 'a') {
+        if (k == 0) {
+            return false;
         }
-        return;
+        dest = &L->at(i).at(k - 1);
+    }
+    else if (direction == 's') {
+        if (i == L->size() - 1) {
+            return false;
+        }
+        dest = &L->at(i + 1).at(k);
     }
     else {
-        for (char direction : possibleDirections(i, k, L, &visited)) {
-            if (direction == 'w') {
-                dfs(ans, L, i - 1, k, stepCount + 1, visited);
+        if (k == L->at(0).size() - 1) {
+            return false;
+        }
+        dest = &L->at(i).at(k + 1);
+    }
+    if (VAL(dest->value) - VAL(self.value) > 1 || dest->visited) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+int updateList(vector<vector<pix>>* L, vector<pix>* dijkstraList)
+{
+    while (1) {
+        for (auto iter = dijkstraList->begin(); iter != dijkstraList->end(); iter++) {
+            if (iter->value == 'E') {
+                return iter->distence;
             }
-            else if (direction == 'a') {
-                dfs(ans, L, i, k - 1, stepCount + 1, visited);
+            if (isValid(L, iter->i, iter->k, 'w')) {
+                if (iter->distence + 1 < L->at(iter->i - 1).at(iter->k).distence) {
+                    L->at(iter->i - 1).at(iter->k).distence++;
+                }
+                dijkstraList->push_back(L->at(iter->i - 1).at(iter->k));
             }
-            else if (direction == 's') {
-                dfs(ans, L, i + 1, k, stepCount + 1, visited);
+            if (isValid(L, iter->i, iter->k, 'a')) {
+                if (iter->distence + 1 < L->at(iter->i).at(iter->k - 1).distence) {
+                    L->at(iter->i - 1).at(iter->k).distence++;
+                }
+                dijkstraList->push_back(L->at(iter->i - 1).at(iter->k));
             }
-            else if (direction == 'd') {
-                dfs(ans, L, i, k + 1, stepCount + 1, visited);
+            if (isValid(L, iter->i, iter->k, 's')) {
+                if (iter->distence + 1 < L->at(iter->i + 1).at(iter->k).distence) {
+                    L->at(iter->i - 1).at(iter->k).distence++;
+                }
+                dijkstraList->push_back(L->at(iter->i - 1).at(iter->k));
             }
-            else {
-                exit(EXIT_FAILURE);
+            if (isValid(L, iter->i, iter->k, 'd')) {
+                if (iter->distence + 1 < L->at(iter->i).at(iter->k + 1).distence) {
+                    L->at(iter->i - 1).at(iter->k).distence++;
+                }
+                dijkstraList->push_back(L->at(iter->i - 1).at(iter->k));
             }
+            dijkstraList->erase(iter);
         }
     }
 }
 
-int ans(vector<vector<pix>>* L)
+int ans(vector<vector<pix>>* L, pix P)
 {
-    int                  ans = L->size() * L->at(0).size();
-    vector<vector<bool>> visited;
-    for (int i = 0; i < L->size(); i++) {
-        vector<bool> a;
-        for (int k = 0; k < L->at(0).size(); k++) {
-            a.push_back(false);
-        }
-        visited.push_back(a);
-    }
-    dfs(ans, L, 0, 0, 0, visited);
-    return ans;
+    vector<pix> dijkstraList;
+    dijkstraList.push_back(P);
+    return updateList(L, &dijkstraList);
 }
