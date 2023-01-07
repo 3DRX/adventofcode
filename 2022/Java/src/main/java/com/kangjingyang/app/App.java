@@ -34,7 +34,7 @@ public class App {
         // --------------------------------
         // day1.phase1(Lines);
         // day1.phase2(Lines);
-        day2.phase1(Lines);
-        // day2.phase2(Lines);
+        // day2.phase1(Lines);
+        day2.phase2(Lines);
     }
 }
