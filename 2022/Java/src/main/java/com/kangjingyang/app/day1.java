@@ -3,7 +3,7 @@ package com.kangjingyang.app;
 import java.util.ArrayList;
 
 public class day1 {
-    public static void phase1(ArrayList<String> Lines) {
+    public void phase1(ArrayList<String> Lines) {
         int res = 0;
         int current_elf = 0;
         for (String line : Lines) {
@@ -20,7 +20,7 @@ public class day1 {
         System.out.println(res);
     }
 
-    public static void phase2(ArrayList<String> Lines) {
+    public void phase2(ArrayList<String> Lines) {
         int[] res = new int[3];
         int current_elf = 0;
         for (String line : Lines) {

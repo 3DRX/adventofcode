@@ -1,10 +1,10 @@
 package com.kangjingyang.app;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 
 public class App {
     public static void main(String[] args) {
@@ -32,13 +32,8 @@ public class App {
             e.printStackTrace();
         }
         // --------------------------------
-        // day1.phase1(Lines);
-        // day1.phase2(Lines);
-        // day2.phase1(Lines);
-        // day2.phase2(Lines);
-        // day3.phase1(Lines);
-        // day3.phase2(Lines);
-        // day4.phase1(Lines);
-        day4.phase2(Lines);
+        day5 solution = new day5();
+        // solution.phase1(Lines);
+        solution.phase2(Lines);
     }
 }

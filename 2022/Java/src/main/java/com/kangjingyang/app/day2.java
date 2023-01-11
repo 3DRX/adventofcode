@@ -3,7 +3,7 @@ package com.kangjingyang.app;
 import java.util.ArrayList;
 
 public class day2 {
-    public static void phase1(ArrayList<String> Lines) {
+    public void phase1(ArrayList<String> Lines) {
         int total_score = 0;
         for (String line : Lines) {
             char a = line.split(" ")[0].toCharArray()[0];
@@ -13,7 +13,7 @@ public class day2 {
         System.out.println(total_score);
     }
 
-    public static void phase2(ArrayList<String> Lines) {
+    public void phase2(ArrayList<String> Lines) {
         int total_score = 0;
         for (String line : Lines) {
             char a = line.split(" ")[0].toCharArray()[0];
@@ -23,7 +23,7 @@ public class day2 {
         System.out.println(total_score);
     }
 
-    private static char get_choice(char a, char b) {
+    private char get_choice(char a, char b) {
         if (a == 'A') {
             if (b == 'X') {
                 return 'Z';
@@ -51,7 +51,7 @@ public class day2 {
         }
     }
 
-    private static int get_res(char a, char b) {
+    private int get_res(char a, char b) {
         // returns:
         // 1) b wins
         // 2) b loses
@@ -69,7 +69,7 @@ public class day2 {
         }
     }
 
-    private static int get_score(char a, char b) {
+    private int get_score(char a, char b) {
         int res = 0;
         if (b == 'X') {
             res += 1;

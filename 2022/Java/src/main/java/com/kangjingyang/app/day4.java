@@ -3,7 +3,7 @@ package com.kangjingyang.app;
 import java.util.ArrayList;
 
 public class day4 {
-    public static void phase1(ArrayList<String> Lines) {
+    public void phase1(ArrayList<String> Lines) {
         int ans = 0;
         for (String line : Lines) {
             int a_left = Integer.parseInt(line.split(",")[0].split("-")[0]);
@@ -19,7 +19,7 @@ public class day4 {
         System.out.println(ans);
     }
 
-    public static void phase2(ArrayList<String> Lines) {
+    public void phase2(ArrayList<String> Lines) {
         int ans = 0;
         for (String line : Lines) {
             int a_left = Integer.parseInt(line.split(",")[0].split("-")[0]);

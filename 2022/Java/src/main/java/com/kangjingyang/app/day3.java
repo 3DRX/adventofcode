@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class day3 {
-    public static void phase1(ArrayList<String> Lines) {
+    public void phase1(ArrayList<String> Lines) {
         int priority_sum = 0;
         for (String line : Lines) {
             String first = line.substring(0, line.length() / 2);
@@ -14,7 +14,7 @@ public class day3 {
         System.out.println(priority_sum);
     }
 
-    public static void phase2(ArrayList<String> Lines) {
+    public void phase2(ArrayList<String> Lines) {
         int i = 0;
         HashSet<Character> Set1 = new HashSet<Character>();
         HashSet<Character> Set2 = new HashSet<Character>();
@@ -49,7 +49,7 @@ public class day3 {
         System.out.println(res);
     }
 
-    private static int get_priority(String first, String second) {
+    private int get_priority(String first, String second) {
         int res = 0;
         HashSet<Character> Set = new HashSet<Character>();
         char r = '\0';
