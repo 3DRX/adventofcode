@@ -1,72 +1,8 @@
 package com.kangjingyang.app;
 
+import com.kangjingyang.app.utils.BinaryTreeNode;
+
 import java.util.ArrayList;
-
-public class BinaryTreeNode {
-    private int data;
-    private ArrayList<BinaryTreeNode> subDirs;
-    private BinaryTreeNode parent;
-    private boolean visited;
-
-    BinaryTreeNode() {
-        this.data = 0;
-        this.subDirs = new ArrayList<BinaryTreeNode>();
-        this.parent = null;
-        this.visited = false;
-    }
-
-    public void addSubDir() {
-        BinaryTreeNode newNode = new BinaryTreeNode();
-        newNode.parent = this;
-        this.subDirs.add(newNode);
-    }
-
-    public void addFile(int fileSize) {
-        this.data += fileSize;
-    }
-
-    public BinaryTreeNode autoChangeDirectory() {
-        for (BinaryTreeNode node : this.subDirs) {
-            if (node.isVisited() == false) {
-                node.setVisited(true);
-                return node;
-            }
-        }
-        return this.parent;
-    }
-
-    public int getData() {
-        return data;
-    }
-
-    public void setData(int data) {
-        this.data = data;
-    }
-
-    public ArrayList<BinaryTreeNode> getSubDirs() {
-        return subDirs;
-    }
-
-    public void setSubDirs(ArrayList<BinaryTreeNode> subDirs) {
-        this.subDirs = subDirs;
-    }
-
-    public BinaryTreeNode getParent() {
-        return parent;
-    }
-
-    public void setParent(BinaryTreeNode parent) {
-        this.parent = parent;
-    }
-
-    public boolean isVisited() {
-        return visited;
-    }
-
-    public void setVisited(boolean visited) {
-        this.visited = visited;
-    }
-}
 
 public class day7 {
 
@@ -90,8 +26,16 @@ public class day7 {
                 }
             }
         }
+        dfs(treeRoot);
     }
 
     public void phase2(ArrayList<String> Lines) {
+    }
+
+    private void dfs(BinaryTreeNode root) {
+        System.out.println(root.getData());
+        for (BinaryTreeNode sub : root.getSubDirs()) {
+            dfs(sub);
+        }
     }
 }

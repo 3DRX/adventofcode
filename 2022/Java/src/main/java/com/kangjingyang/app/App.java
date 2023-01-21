@@ -32,7 +32,7 @@ public class App {
             e.printStackTrace();
         }
         // --------------------------------
-        day6 solution = new day6();
-        solution.phase2(Lines);
+        day7 solution = new day7();
+        solution.phase1(Lines);
     }
 }
