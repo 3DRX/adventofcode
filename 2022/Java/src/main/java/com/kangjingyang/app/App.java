@@ -33,6 +33,6 @@ public class App {
         }
         // --------------------------------
         day7 solution = new day7();
-        solution.phase1(Lines);
+        solution.phase2(Lines);
     }
 }
