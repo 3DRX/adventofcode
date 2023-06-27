@@ -1,9 +1,9 @@
 use std::{fs::File, io::{BufReader, BufRead}};
 
-mod day2;
+mod day3;
 
 fn main() {
-    day2::phase_2(read_input("io/in.txt"));
+    day3::phase_2(read_input("io/in.txt"));
 }
 
 fn read_input(file_path: &str) -> Vec<String> {
