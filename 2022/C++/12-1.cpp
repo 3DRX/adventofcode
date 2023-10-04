@@ -1,172 +1,138 @@
-
-#include <cassert>
-#include <climits>
-#include <cstdlib>
-#include <iostream>
-#include <string>
-#include <vector>
-
-#define VAL(a) (a == 'S' ? 0 : a == 'E' ? 25 \
-                                        : a - 'a')
-
-using std::cin;
-using std::cout;
-using std::endl;
-using std::getline;
-using std::string;
-using std::vector;
+#include "basehead.hpp"
+#include <algorithm>
 
 struct pix {
-    char value;
-    bool visited;
-    int  distence;
-    int  i;
-    int  k;
-    pix(int i, int k, char value, bool visited, int distence = INT_MAX)
-    {
-        this->value = value;
-        this->visited = visited;
-        this->distence = distence;
-        this->i = i;
-        this->k = k;
-    }
-    pix(const pix& a)
-    {
-        this->value = a.value;
-        this->visited = a.visited;
-        this->distence = a.distence;
-        this->i = a.i;
-        this->k = a.k;
-    }
+  char value;
+  bool visited;
+  bool enqueued;
+  int distance;
 };
 
-pix input(vector<vector<pix>>* L);
-int ans(vector<vector<pix>>* L, pix P);
+struct pos {
+  int x;
+  int y;
+};
 
-int main(void)
-{
-    vector<vector<pix>> L;
-    cout << ans(&L, input(&L)) << endl;
-    return 0;
-}
-
-pix input(vector<vector<pix>>* L)
-{
-    pix*   res;
-    string iptLine;
-    int    i = 0;
-    while (1) {
-        getline(cin, iptLine);
-        if (iptLine == "") {
-            break;
+pos input(vector<vector<pix>> *L) {
+  string iptLine;
+  pos start;
+  int i = 0;
+  while (1) {
+    getline(cin, iptLine);
+    if (iptLine == "") {
+      break;
+    } else {
+      vector<pix> newLine;
+      for (int k = 0; k < iptLine.size(); k++) {
+        pix newPix = {iptLine[k], false, false, INT_MAX};
+        if (iptLine[k] == 'E') {
+          newPix.value = 'z' + 1;
         }
-        else {
-            vector<pix> newLine;
-            for (int k = 0; k < iptLine.size(); k++) {
-                pix newPix = pix(i, k, iptLine[k], false, INT_MAX);
-                newLine.push_back(newPix);
-                if (newPix.value == 'S') {
-                    res = new pix(newPix);
-                }
-            }
-            L->push_back(newLine);
+        if (iptLine[k] == 'S') {
+          newPix.value = 'a' - 1;
+          newPix.distance = 0;
+          start.x = i;
+          start.y = k;
         }
-        i++;
+        newLine.push_back(newPix);
+      }
+      L->push_back(newLine);
     }
-    return *res;
+    i++;
+  }
+  return start;
 }
 
-void printGrid(vector<vector<pix>>* L)
-{
-    for (auto line : *L) {
-        for (auto a : line) {
-            if (a.visited) {
-                cout << "#";
-            }
-            else {
-                cout << '.';
-            }
-        }
-        cout << endl;
+void display(vector<vector<pix>> *L) {
+  for (int i = 0; i < L->size(); i++) {
+    for (int j = 0; j < (*L)[i].size(); j++) {
+      if ((*L)[i][j].visited == true) {
+        cout << (*L)[i][j].value;
+      } else {
+        cout << " ";
+      }
     }
     cout << endl;
+  }
 }
 
-bool isValid(vector<vector<pix>>* L, int i, int k, char direction)
-{
-    pix  self = L->at(i).at(k);
-    pix* dest;
-    if (direction == 'w') {
-        if (i == 0) {
-            return false;
-        }
-        dest = &L->at(i - 1).at(k);
+#define L(i, j) (*L)[i][j]
+
+int ans(vector<vector<pix>> *L, pos start) {
+  int X = L->size();
+  int Y = (*L)[0].size();
+  int step = 0;
+  queue<pos> *current_layer = new queue<pos>;
+  queue<pos> *next_layer = new queue<pos>;
+  current_layer->push(start);
+  L(start.x, start.y).enqueued = true;
+  char max_c = 'a' - 1;
+  while (true) {
+    cout << "\riteration: " << step << " ";
+    cout << "max_c: " << max_c << " ";
+    cout << "current_layer: " << current_layer->size() << std::flush;
+    if (max_c >= 'y') {
+      cout << endl;
+      display(L);
     }
-    else if (direction == 'a') {
-        if (k == 0) {
-            return false;
-        }
-        dest = &L->at(i).at(k - 1);
+    while (current_layer->size() != 0) {
+      pos p = current_layer->front();
+      current_layer->pop();
+      L(p.x, p.y).visited = true;
+      if (L(p.x, p.y).value > max_c) {
+        max_c = L(p.x, p.y).value;
+      }
+      if (L(p.x, p.y).value == 'z' + 1) {
+        delete current_layer;
+        delete next_layer;
+        return L(p.x, p.y).distance;
+      }
+      // get adjacent position of p
+      if (p.x != 0 && !L(p.x - 1, p.y).visited && !L(p.x - 1, p.y).enqueued &&
+          (L(p.x - 1, p.y).value <= L(p.x, p.y).value + 1)) {
+        next_layer->push({p.x - 1, p.y});
+        L(p.x - 1, p.y).enqueued = true;
+        L(p.x - 1, p.y).distance =
+            std::min(L(p.x - 1, p.y).distance, L(p.x, p.y).distance + 1);
+        // cout << "push: " << p.x - 1 << " " << p.y << endl;
+      }
+      if (p.x != X - 1 && !L(p.x + 1, p.y).visited &&
+          !L(p.x + 1, p.y).enqueued &&
+          (L(p.x + 1, p.y).value <= L(p.x, p.y).value + 1)) {
+        next_layer->push({p.x + 1, p.y});
+        L(p.x + 1, p.y).enqueued = true;
+        L(p.x + 1, p.y).distance =
+            std::min(L(p.x + 1, p.y).distance, L(p.x, p.y).distance + 1);
+        // cout << "push: " << p.x + 1 << " " << p.y << endl;
+      }
+      if (p.y != 0 && !L(p.x, p.y - 1).visited && !L(p.x, p.y - 1).enqueued &&
+          (L(p.x, p.y - 1).value <= L(p.x, p.y).value + 1)) {
+        next_layer->push({p.x, p.y - 1});
+        L(p.x, p.y - 1).enqueued = true;
+        L(p.x, p.y - 1).distance =
+            std::min(L(p.x, p.y - 1).distance, L(p.x, p.y).distance + 1);
+        // cout << "push: " << p.x << " " << p.y - 1 << endl;
+      }
+      if (p.y != Y - 1 && !L(p.x, p.y + 1).visited &&
+          !L(p.x, p.y + 1).enqueued &&
+          (L(p.x, p.y + 1).value <= L(p.x, p.y).value + 1)) {
+        next_layer->push({p.x, p.y + 1});
+        L(p.x, p.y + 1).enqueued = true;
+        L(p.x, p.y + 1).distance =
+            std::min(L(p.x, p.y + 1).distance, L(p.x, p.y).distance + 1);
+        // cout << "push: " << p.x << " " << p.y + 1 << endl;
+      }
     }
-    else if (direction == 's') {
-        if (i == L->size() - 1) {
-            return false;
-        }
-        dest = &L->at(i + 1).at(k);
-    }
-    else {
-        if (k == L->at(0).size() - 1) {
-            return false;
-        }
-        dest = &L->at(i).at(k + 1);
-    }
-    if (VAL(dest->value) - VAL(self.value) > 1 || dest->visited) {
-        return false;
-    }
-    else {
-        return true;
-    }
+    // swap
+    auto t = current_layer;
+    current_layer = next_layer;
+    next_layer = t;
+    step++;
+  }
 }
 
-int updateList(vector<vector<pix>>* L, vector<pix>* dijkstraList)
-{
-    while (1) {
-        for (auto iter = dijkstraList->begin(); iter != dijkstraList->end(); iter++) {
-            if (iter->value == 'E') {
-                return iter->distence;
-            }
-            if (isValid(L, iter->i, iter->k, 'w')) {
-                if (iter->distence + 1 < L->at(iter->i - 1).at(iter->k).distence) {
-                    L->at(iter->i - 1).at(iter->k).distence++;
-                }
-                dijkstraList->push_back(L->at(iter->i - 1).at(iter->k));
-            }
-            if (isValid(L, iter->i, iter->k, 'a')) {
-                if (iter->distence + 1 < L->at(iter->i).at(iter->k - 1).distence) {
-                    L->at(iter->i - 1).at(iter->k).distence++;
-                }
-                dijkstraList->push_back(L->at(iter->i - 1).at(iter->k));
-            }
-            if (isValid(L, iter->i, iter->k, 's')) {
-                if (iter->distence + 1 < L->at(iter->i + 1).at(iter->k).distence) {
-                    L->at(iter->i - 1).at(iter->k).distence++;
-                }
-                dijkstraList->push_back(L->at(iter->i - 1).at(iter->k));
-            }
-            if (isValid(L, iter->i, iter->k, 'd')) {
-                if (iter->distence + 1 < L->at(iter->i).at(iter->k + 1).distence) {
-                    L->at(iter->i - 1).at(iter->k).distence++;
-                }
-                dijkstraList->push_back(L->at(iter->i - 1).at(iter->k));
-            }
-            dijkstraList->erase(iter);
-        }
-    }
-}
-
-int ans(vector<vector<pix>>* L, pix P)
-{
-    vector<pix> dijkstraList;
-    dijkstraList.push_back(P);
-    return updateList(L, &dijkstraList);
+int main(void) {
+  vector<vector<pix>> L;
+  cout << ans(&L, input(&L)) << endl;
+  return 0;
 }
