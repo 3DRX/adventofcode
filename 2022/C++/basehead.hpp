@@ -8,6 +8,7 @@
 #include <queue>
 #include <string>
 #include <vector>
+#include <unistd.h>
 
 using std::cin;
 using std::cout;

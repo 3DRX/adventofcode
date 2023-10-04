@@ -1,10 +1,10 @@
 #include "basehead.hpp"
 #include <algorithm>
+#include <unistd.h>
 
 struct pix {
   char value;
   bool visited;
-  bool enqueued;
   int distance;
 };
 
@@ -24,7 +24,7 @@ pos input(vector<vector<pix>> *L) {
     } else {
       vector<pix> newLine;
       for (int k = 0; k < iptLine.size(); k++) {
-        pix newPix = {iptLine[k], false, false, INT_MAX};
+        pix newPix = {iptLine[k], false, INT_MAX};
         if (iptLine[k] == 'E') {
           newPix.value = 'z' + 1;
         }
@@ -44,13 +44,15 @@ pos input(vector<vector<pix>> *L) {
 }
 
 void display(vector<vector<pix>> *L) {
+  cout << "\033[0;0H" << endl;
   for (int i = 0; i < L->size(); i++) {
     for (int j = 0; j < (*L)[i].size(); j++) {
       if ((*L)[i][j].visited == true) {
-        cout << (*L)[i][j].value;
+        cout << "\033[0m";
       } else {
-        cout << " ";
+        cout << "\033[2m";
       }
+      cout << (*L)[i][j].value << std::flush;
     }
     cout << endl;
   }
@@ -58,55 +60,50 @@ void display(vector<vector<pix>> *L) {
 
 int ans(vector<vector<pix>> *L, pos start) {
 #define L(i, j) (*L)[i][j]
+  cout << "\033[?25l" << endl;
   int X = L->size();
   int Y = (*L)[0].size();
   queue<pos> q;
   q.push(start);
-  L(start.x, start.y).enqueued = true;
-  char max_c = 'a' - 1;
+  L(start.x, start.y).visited = true;
   while (q.size() != 0) {
+    // display(L);
+    // usleep(20000);
     pos p = q.front();
     q.pop();
-    L(p.x, p.y).visited = true;
-    if (L(p.x, p.y).value > max_c) {
-      max_c = L(p.x, p.y).value;
-    }
     if (L(p.x, p.y).value == 'z' + 1) {
       return L(p.x, p.y).distance;
     }
-    if (p.x != 0 && (L(p.x - 1, p.y).value <= L(p.x, p.y).value + 1)) {
-      if (!L(p.x - 1, p.y).visited && !L(p.x - 1, p.y).enqueued) {
-        q.push({p.x - 1, p.y});
-        L(p.x - 1, p.y).enqueued = true;
-      }
+    if (p.x != 0 && (L(p.x - 1, p.y).value <= L(p.x, p.y).value + 1) &&
+        !L(p.x - 1, p.y).visited) {
+      q.push({p.x - 1, p.y});
+      L(p.x - 1, p.y).visited = true;
       L(p.x - 1, p.y).distance =
           std::min(L(p.x - 1, p.y).distance, L(p.x, p.y).distance + 1);
     }
-    if (p.x != X - 1 && (L(p.x + 1, p.y).value <= L(p.x, p.y).value + 1)) {
-      if (!L(p.x + 1, p.y).visited && !L(p.x + 1, p.y).enqueued) {
-        q.push({p.x + 1, p.y});
-        L(p.x + 1, p.y).enqueued = true;
-      }
+    if (p.x != X - 1 && (L(p.x + 1, p.y).value <= L(p.x, p.y).value + 1) &&
+        !L(p.x + 1, p.y).visited) {
+      q.push({p.x + 1, p.y});
+      L(p.x + 1, p.y).visited = true;
       L(p.x + 1, p.y).distance =
           std::min(L(p.x + 1, p.y).distance, L(p.x, p.y).distance + 1);
     }
-    if (p.y != 0 && (L(p.x, p.y - 1).value <= L(p.x, p.y).value + 1)) {
-      if (!L(p.x, p.y - 1).visited && !L(p.x, p.y - 1).enqueued) {
-        q.push({p.x, p.y - 1});
-        L(p.x, p.y - 1).enqueued = true;
-      }
+    if (p.y != 0 && (L(p.x, p.y - 1).value <= L(p.x, p.y).value + 1) &&
+        !L(p.x, p.y - 1).visited) {
+      q.push({p.x, p.y - 1});
+      L(p.x, p.y - 1).visited = true;
       L(p.x, p.y - 1).distance =
           std::min(L(p.x, p.y - 1).distance, L(p.x, p.y).distance + 1);
     }
-    if (p.y != Y - 1 && (L(p.x, p.y + 1).value <= L(p.x, p.y).value + 1)) {
-      if (!L(p.x, p.y + 1).visited && !L(p.x, p.y + 1).enqueued) {
-        q.push({p.x, p.y + 1});
-        L(p.x, p.y + 1).enqueued = true;
-      }
+    if (p.y != Y - 1 && (L(p.x, p.y + 1).value <= L(p.x, p.y).value + 1) &&
+        !L(p.x, p.y + 1).visited) {
+      q.push({p.x, p.y + 1});
+      L(p.x, p.y + 1).visited = true;
       L(p.x, p.y + 1).distance =
           std::min(L(p.x, p.y + 1).distance, L(p.x, p.y).distance + 1);
     }
   }
+  cout << "\33[?25h" << endl;
   return INT_MAX;
 }
 
