@@ -1,6 +1,4 @@
 #include "basehead.hpp"
-#include <algorithm>
-#include <unistd.h>
 
 struct pix {
   char value;
@@ -12,6 +10,17 @@ struct pos {
   int x;
   int y;
 };
+
+// elevation
+char E(char c) {
+  if (c == 'E') {
+    return 'z';
+  } else if (c == 'S') {
+    return 'a';
+  } else {
+    return c;
+  }
+}
 
 pos input(vector<vector<pix>> *L) {
   string iptLine;
@@ -25,11 +34,7 @@ pos input(vector<vector<pix>> *L) {
       vector<pix> newLine;
       for (int k = 0; k < iptLine.size(); k++) {
         pix newPix = {iptLine[k], false, INT_MAX};
-        if (iptLine[k] == 'E') {
-          newPix.value = 'z' + 1;
-        }
         if (iptLine[k] == 'S') {
-          newPix.value = 'a' - 1;
           newPix.distance = 0;
           start.x = i;
           start.y = k;
@@ -67,35 +72,36 @@ int ans(vector<vector<pix>> *L, pos start) {
   q.push(start);
   L(start.x, start.y).visited = true;
   while (q.size() != 0) {
-    // display(L);
-    // usleep(20000);
+    display(L);
     pos p = q.front();
     q.pop();
-    if (L(p.x, p.y).value == 'z' + 1) {
+    if (L(p.x, p.y).value == 'E') {
       return L(p.x, p.y).distance;
     }
-    if (p.x != 0 && (L(p.x - 1, p.y).value <= L(p.x, p.y).value + 1) &&
+    if (p.x != 0 && (E(L(p.x - 1, p.y).value) <= E(L(p.x, p.y).value) + 1) &&
         !L(p.x - 1, p.y).visited) {
       q.push({p.x - 1, p.y});
       L(p.x - 1, p.y).visited = true;
       L(p.x - 1, p.y).distance =
           std::min(L(p.x - 1, p.y).distance, L(p.x, p.y).distance + 1);
     }
-    if (p.x != X - 1 && (L(p.x + 1, p.y).value <= L(p.x, p.y).value + 1) &&
+    if (p.x != X - 1 &&
+        (E(L(p.x + 1, p.y).value) <= E(L(p.x, p.y).value) + 1) &&
         !L(p.x + 1, p.y).visited) {
       q.push({p.x + 1, p.y});
       L(p.x + 1, p.y).visited = true;
       L(p.x + 1, p.y).distance =
           std::min(L(p.x + 1, p.y).distance, L(p.x, p.y).distance + 1);
     }
-    if (p.y != 0 && (L(p.x, p.y - 1).value <= L(p.x, p.y).value + 1) &&
+    if (p.y != 0 && (E(L(p.x, p.y - 1).value) <= E(L(p.x, p.y).value) + 1) &&
         !L(p.x, p.y - 1).visited) {
       q.push({p.x, p.y - 1});
       L(p.x, p.y - 1).visited = true;
       L(p.x, p.y - 1).distance =
           std::min(L(p.x, p.y - 1).distance, L(p.x, p.y).distance + 1);
     }
-    if (p.y != Y - 1 && (L(p.x, p.y + 1).value <= L(p.x, p.y).value + 1) &&
+    if (p.y != Y - 1 &&
+        (E(L(p.x, p.y + 1).value) <= E(L(p.x, p.y).value) + 1) &&
         !L(p.x, p.y + 1).visited) {
       q.push({p.x, p.y + 1});
       L(p.x, p.y + 1).visited = true;
