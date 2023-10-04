@@ -4,18 +4,19 @@
 #include <cassert>
 #include <climits>
 #include <cstdlib>
+#include <fstream>
 #include <iostream>
 #include <queue>
 #include <string>
-#include <vector>
 #include <unistd.h>
+#include <vector>
 
 using std::cin;
 using std::cout;
 using std::endl;
 using std::getline;
+using std::queue;
 using std::string;
 using std::vector;
-using std::queue;
 
 #endif
