@@ -53,7 +53,7 @@ void display(vector<vector<pix>> *L) {
   for (int i = 0; i < L->size(); i++) {
     for (int j = 0; j < (*L)[i].size(); j++) {
       if ((*L)[i][j].visited == true) {
-        cout << "\033[0m";
+        cout << "\033[0m\033[1m\033[37m";
       } else {
         cout << "\033[2m";
       }
