@@ -1,7 +1,5 @@
 #include "basehead.hpp"
 
-enum Result { Ordered = 0, Unordered, Tie };
-
 struct Item {
   int i;
   vector<Item> v;
@@ -62,14 +60,16 @@ struct Item {
       if (this->isInt) {
         if (other.v.size() == 0) {
           return false;
+        } else if (other.v.size() == 1) {
+          return Item(this->i) < other.v[0];
         } else {
-          return !(other.v[0] < this->i);
+          return !(other.v[0] < Item(this->i));
         }
       } else {
         if (this->v.size() == 0) {
           return true;
         } else {
-          return this->v[0] < other.i;
+          return this->v[0] < Item(other.i);
         }
       }
     }
@@ -92,7 +92,19 @@ struct Item {
         return true;
       }
     } else {
-      return false;
+      if (this->isInt) {
+        if (other.v.size() == 1 && other.v[0] == this->i) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        if (this->v.size() == 1 && this->v[0] == other.i) {
+          return true;
+        } else {
+          return false;
+        }
+      }
     }
   }
 };
@@ -164,6 +176,25 @@ void input(vector<Pair> *L) {
   }
 }
 
+void print_item(Item item, bool end) {
+  if (item.isInt) {
+    cout << item.i;
+  } else {
+    cout << "[";
+    for (size_t i = 0; i < item.v.size(); i++) {
+      if (i == item.v.size() - 1) {
+        print_item(item.v[i], true);
+      } else {
+        print_item(item.v[i], false);
+      }
+    }
+    cout << "]";
+  }
+  if (!end) {
+    cout << ", ";
+  }
+}
+
 int main(int argc, char *argv[]) {
   vector<Pair> L;
   input(&L);
@@ -172,6 +203,7 @@ int main(int argc, char *argv[]) {
     auto pair = L[i];
     if (pair.first < pair.second) {
       count += i + 1;
+      // cout << i + 1 << endl;
     }
   }
   cout << "count: " << count << endl;
