@@ -3,7 +3,7 @@
 struct Item {
   int i;
   vector<Item> v;
-  const bool isInt;
+  bool isInt;
 
   Item(int i) : isInt(true), i(i){};
   Item() : isInt(false), v(vector<Item>()){};
@@ -33,6 +33,7 @@ struct Item {
       } else {
         this->v = other.v;
       }
+      this->isInt = other.isInt;
     }
     return *this;
   }

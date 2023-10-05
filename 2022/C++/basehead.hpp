@@ -1,6 +1,7 @@
 #ifndef BASEHEAD_HPP
 #define BASEHEAD_HPP
 
+#include <algorithm>
 #include <cassert>
 #include <climits>
 #include <cstdlib>
