@@ -2,7 +2,7 @@
 
 struct Valve {
   string name;
-  int flow_rate;
+  u64 flow_rate;
   vector<string> adj;
 
   Valve() {}
@@ -10,8 +10,8 @@ struct Valve {
   Valve(string str) {
     auto s = split(str);
     this->name = s[1];
-    this->flow_rate = stoi(split(s[4].substr(0, s[4].size() - 1), "=")[1]);
-    for (size_t i = 9; i < s.size(); i++) {
+    this->flow_rate = stoul(split(s[4].substr(0, s[4].size() - 1), "=")[1]);
+    for (u64 i = 9; i < s.size(); i++) {
       if (i == s.size() - 1) {
         this->adj.push_back(s[i]);
       } else {
@@ -48,7 +48,7 @@ string input(unordered_map<string, Valve> &v) {
   return start;
 }
 
-int max_pressure(unordered_map<string, Valve> &v, string start) {
+u32 max_pressure(unordered_map<string, Valve> &v, string start) {
   cout << start << endl;
   return 0;
 }
