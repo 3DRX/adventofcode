@@ -14,6 +14,8 @@
 #include <unordered_map>
 #include <vector>
 
+#define TOSTR(os, x) friend std::ostream &operator<<(std::ostream &os, const x)
+
 using std::cin;
 using std::cout;
 using std::endl;

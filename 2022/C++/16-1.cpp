@@ -20,7 +20,7 @@ struct Valve {
     }
   }
 
-  friend std::ostream &operator<<(std::ostream &os, const Valve &v) {
+  TOSTR(os, Valve &v) {
     os << v.name << " ";
     os << "(" << v.flow_rate << "):";
     for (auto &i : v.adj) {
